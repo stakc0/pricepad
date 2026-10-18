@@ -196,18 +196,41 @@ let railDragged = false;
 
 /* ── the clock ────────────────────────────────────────── */
 
+const REBELLION_START = Date.UTC(2025, 6, 10, 0, 0, 0);
 function tick() {
-  const now = Date.now();
-  const on = chain?.config?.nextRelease ? chain.config.nextRelease * 1000 : 0;
-  const at = on > now ? on : RELEASES.find((t) => t > now);
-  if (!at) return;
-  const d = at - now;
-  $("#cdD").textContent = String(Math.floor(d / 864e5)).padStart(2, "0");
-  $("#cdH").textContent = String(Math.floor(d / 36e5) % 24).padStart(2, "0");
-  $("#cdM").textContent = String(Math.floor(d / 6e4) % 60).padStart(2, "0");
-  $("#chipNext").textContent = new Date(at).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" });
+  const elapsed = Math.max(0, Date.now() - REBELLION_START);
+  const days = Math.floor(elapsed / 864e5);
+  const hours = Math.floor(elapsed / 36e5) % 24;
+  const minutes = Math.floor(elapsed / 6e4) % 60;
+  const seconds = Math.floor(elapsed / 1000) % 60;
+  $("#cdD") && ($("#cdD").textContent = String(days).padStart(3, "0"));
+  $("#cdH") && ($("#cdH").textContent = String(hours).padStart(2, "0"));
+  $("#cdM") && ($("#cdM").textContent = String(minutes).padStart(2, "0"));
+  $("#cdS") && ($("#cdS").textContent = String(seconds).padStart(2, "0"));
+  $("#clockYears") && ($("#clockYears").textContent = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`);
 }
-setInterval(tick, 20000);
+setInterval(tick, 1000);
+
+
+/* The Rebellion petition */
+{
+  const form = $("#petitionForm"), name = $("#petitionName"), status = $("#petitionStatus"), count = $("#petitionCount");
+  const key = "rebellion-signatures";
+  const signatures = () => JSON.parse(localStorage.getItem(key) || "[]");
+  const paint = () => { if (count) count.textContent = signatures().length; };
+  if (form) form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const value = name.value.trim();
+    if (!value) return;
+    const list = signatures();
+    if (!list.some((x) => x.toLowerCase() === value.toLowerCase())) list.push(value);
+    localStorage.setItem(key, JSON.stringify(list));
+    name.value = "";
+    status.textContent = "Your signature is on this device's petition record.";
+    paint();
+  });
+  paint();
+}
 
 /* ── boot ─────────────────────────────────────────────── */
 

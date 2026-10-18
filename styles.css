@@ -475,3 +475,57 @@ footer { padding: 70px 0 34px; }
 .doc p, .doc li { overflow-wrap: anywhere; }
 .notice .btn[hidden], .chip[hidden] { display: none; }
 .foot a.brand { display: inline-flex; padding: 0; color: var(--ink); font-size: 1.02rem; }
+
+/* THE REBELLION theme */
+:root {
+  --sky-0: #ff2a18;
+  --sky-1: #ef3d2d;
+  --sky-2: #fff0ed;
+  --paper: #fff8f6;
+  --card: #fffdfc;
+  --ink: #211313;
+  --ink-2: #704541;
+  --ink-3: #a87871;
+  --ink-4: #d8aca5;
+  --line: rgba(75, 23, 18, .14);
+  --line-2: rgba(75, 23, 18, .08);
+  --accent: #c51616;
+  --accent-soft: #ffd5ce;
+  --up: #a51616;
+  --up-soft: #ffd8d2;
+  --down: #7c1010;
+  --down-soft: #f5c6bf;
+  --sh-1: 0 1px 2px rgba(86, 19, 10, .06), 0 8px 24px rgba(86, 19, 10, .08);
+  --sh-2: 0 18px 50px rgba(86, 19, 10, .16);
+}
+body { background: var(--paper); }
+.hero { background: radial-gradient(55% 65% at 75% 35%, rgba(255,255,255,.08), transparent 70%), linear-gradient(180deg, #ff1b0b 0%, #ed392b 56%, #c97b74 100%), url('/assets/rebellion-pill.jpg'); background-size: cover; background-position: center; }
+.hero::after { content: ""; position: absolute; inset: 0; background: rgba(162, 10, 5, .2); pointer-events: none; }
+.hero .wrap { z-index: 3; }
+.hero h1, .hero .sub { color: #fff8f6; }
+.hero h1 .word { color: #ffe0d9; }
+.hero .sub { color: #ffe8e3; }
+.hero .btn { background: #fff8f6; border-color: #fff8f6; color: #9b1712; }
+.hero .btn.ghost { background: transparent; color: #fff8f6; border-color: rgba(255,255,255,.7); }
+.hero .chip { background: rgba(255,248,246,.88); color: #5d211d; }
+.rebellion-petition { background: linear-gradient(180deg, #fff8f6 0%, #ffe8e3 100%); }
+.petition-card { display: grid; grid-template-columns: 1.1fr .9fr; gap: 42px; align-items: center; max-width: 900px; margin: 0 auto; padding: 30px; background: #fffdfc; border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--sh-2); }
+.petition-card h3 { font-size: clamp(1.6rem, 3vw, 2.4rem); margin: 12px 0; }
+.petition-card p { color: var(--ink-2); }
+.petition-card form { display: grid; gap: 10px; }
+.petition-card label { font-family: var(--mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-3); }
+.petition-card input { width: 100%; padding: 13px 15px; border: 1px solid var(--line); border-radius: var(--r-sm); background: #fff8f6; color: var(--ink); outline: none; }
+.petition-card input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(197,22,22,.12); }
+.petition-card .btn { background: var(--accent); border-color: var(--accent); color: #fff; }
+.petition-status { min-height: 1.4em; font-family: var(--mono); font-size: .72rem; color: var(--accent) !important; margin: 0 !important; }
+#things, #pot, #all, #board, #faq { display: none; }
+#clock .card:first-child { background: linear-gradient(145deg, #9f100d, #ee382a); color: #fff; }
+#clock .card:first-child .micro, #clock .card:first-child .count span { color: #ffd9d3; }
+#clock .card:first-child .count > div { background: rgba(255,255,255,.12); }
+#clock .card:first-child .timeline .rail { background: rgba(255,255,255,.35); }
+#clock .card:first-child .timeline .tick { background: #fff; }
+#clock .card:first-child .timeline .lab { color: #ffe8e3; }
+#clock .rules { background: #fffdfc; }
+@media (max-width: 760px) { .petition-card { grid-template-columns: 1fr; gap: 22px; padding: 22px; } }
+.petition-ca { overflow-wrap: anywhere; font-size: .7rem; color: var(--accent) !important; cursor: pointer; }
+.petition-ca .do { margin-left: 6px; text-transform: uppercase; letter-spacing: .1em; }

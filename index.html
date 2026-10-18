@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pricepad · Bet on the price of eggs</title>
-<meta name="description" content="The U.S. government prices 68 everyday things every month. Pick one, pick up or down, and get paid in SOL when the number lands.">
-<meta property="og:title" content="Pricepad · Bet on the price of eggs">
-<meta property="og:description" content="Eggs, rent, funerals and 65 more, priced by the Bureau of Labor Statistics every month. Up or down, in SOL.">
+<title>The Rebellion · The airdrop is still coming soon</title>
+<meta name="description" content="The Rebellion is a public petition demanding answers about Pump.fun's airdrop promise.">
+<meta property="og:title" content="The Rebellion · The airdrop is still coming soon">
+<meta property="og:description" content="Sign the petition. Track the time since Pump.fun said the airdrop was coming soon.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
@@ -21,18 +21,18 @@
 <header class="nav">
   <div class="wrap">
     <nav class="pillbox">
-      <a class="brand" href="/">pricepad</a>
+      <a class="brand" href="/">the rebellion</a>
       <div class="navlinks">
-        <a href="#things">Markets</a>
-        <a href="#pot">How it pays</a>
-        <a href="#freeze">Release day</a>
-        <a href="#board">The board</a>
+        <a href="#petition">Petition</a>
+        <a href="#clock">The clock</a>
+        <a href="#case">The case</a>
+        <a href="#petition">The petition</a>
         <a href="#faq">FAQ</a>
       </div>
     </nav>
     <div class="pillbox right">
       <a class="btn ghost" href="/how-it-works">Docs</a>
-      <a class="btn" href="/app">Open the app</a>
+      <a class="btn" href="#petition">Sign the petition</a>
     </div>
   </div>
 </header>
@@ -40,23 +40,37 @@
 <section class="hero" id="top">
   <canvas class="scene" id="scene" aria-hidden="true"></canvas>
   <div class="wrap">
-    <h1 data-reveal>Bet on the price of <span class="word" id="word">eggs.</span></h1>
-    <p class="sub" data-reveal style="--d:120ms">The U.S. government prices 68 everyday things every month. Pick one, pick up or down, and get paid in SOL when the number lands.</p>
+    <h1 data-reveal>The airdrop is still <span class="word" id="word">coming soon.</span></h1>
+    <p class="sub" data-reveal style="--d:120ms">The Rebellion is a public petition for answers from Alon Cohen and Noah Tweedale.</p>
     <div class="cta" data-reveal style="--d:220ms">
-      <a class="btn big" href="/app">Start trading</a>
-      <a class="btn big ghost" href="#pot">How it pays</a>
+      <a class="btn big" href="#petition">Sign the petition</a>
+      <a class="btn big ghost" href="#clock">See the clock</a>
     </div>
     <div class="chips" data-reveal style="--d:320ms">
-      <span class="chip"><i class="dot on"></i>Next print <b id="chipNext">Oct 14</b></span>
-      <span class="chip"><b id="chipSeries">68</b> things on the board</span>
-      <span class="chip" id="chipProgram"><i class="dot"></i><span>Checking Solana…</span></span>
+      <span class="chip"><i class="dot on"></i>Since <b>July 10, 2025</b></span>
+      <span class="chip"><b id="petitionCount">0</b> signatures on this device</span>
+      <span class="chip"><i class="dot"></i><span>Public protest</span></span>
     </div>
   </div>
 </section>
 
-<section class="readout">
+<section class="readout" id="case">
   <div class="wrap">
-    <p id="readout">Once a month, at <k>8:30</k> in the morning, the Bureau of Labor Statistics tells America what a dozen <k>eggs</k> cost. And <k>rent,</k> and <k>funerals,</k> and a trip to <k>the vet.</k> Pricepad puts a pot of <k>SOL</k> on either side of every one of those numbers.</p>
+    <p id="readout">On July 10, 2025, Pump.fun said the <k>airdrop was coming soon.</k> The Rebellion records every <k>day,</k> every <k>hour,</k> every <k>second</k> since that promise.</p>
+  </div>
+</section>
+
+<section class="sec rebellion-petition" id="petition">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="micro">The public record</span>
+      <h2 data-reveal>Sign the petition.</h2>
+      <p data-reveal style="--d:80ms">Demand a clear answer about the airdrop. Add your name to the record and share the clock.</p>
+    </div>
+    <div class="petition-card" data-reveal>
+      <div><span class="micro">We remember the promise</span><h3>Alon Cohen and Noah Tweedale, answer the community.</h3><p>We are asking for a timeline, a plan, and accountability. No more coming soon without a date.</p><p class="petition-ca mono" data-addr="GsvnTthMCo23CQLZF5qXHSuLv5d6GoAZ8WarN5zFpump">CA: GsvnTthMCo23CQLZF5qXHSuLv5d6GoAZ8WarN5zFpump <span class="do">copy</span></p></div>
+      <form id="petitionForm"><label for="petitionName">Name or handle</label><input id="petitionName" name="name" autocomplete="nickname" placeholder="your name or @handle" required><button class="btn big" type="submit">Add my signature</button><p class="petition-status" id="petitionStatus" role="status"></p></form>
+    </div>
   </div>
 </section>
 
@@ -65,8 +79,8 @@
   <img class="bob" data-obj="strawberry" alt="" style="left:5%;top:120px;animation-delay:-2s">
   <div class="wrap">
     <div class="sec-h">
-      <h2 data-reveal>What moved last month</h2>
-      <p data-reveal style="--d:80ms">The four biggest swings on the board. Every one is a real series with a real number behind it, and any of them is open to launch.</p>
+      <h2 data-reveal>The case is still open.</h2>
+      <p data-reveal style="--d:80ms">A public record of the promise, the wait, and the people asking for a real answer.</p>
     </div>
     <div class="four" id="four"></div>
   </div>
@@ -109,17 +123,17 @@
   </div>
 </section>
 
-<section class="sec" id="freeze">
+<section class="sec" id="clock">
   <img class="bob" data-obj="envelope" alt="" style="right:9%;top:50px;animation-delay:-1.5s">
   <div class="wrap">
     <div class="sec-h">
-      <h2 data-reveal>Nobody trades on a leaked number</h2>
-      <p data-reveal style="--d:80ms">At 8:30 the figure is on bls.gov. Until it is on chain, anyone who has read it could dump the losing side on everyone still holding. So every market shuts for release hour.</p>
+      <h2 data-reveal>The clock does not stop.</h2>
+      <p data-reveal style="--d:80ms">Track the exact time since the airdrop was announced as coming soon on July 10, 2025.</p>
     </div>
     <div class="clock">
       <div class="card" data-reveal>
-        <span class="micro">Consumer Price Index · 8:30 ET</span>
-        <div class="count"><div><b id="cdD">··</b><span>days</span></div><div><b id="cdH">··</b><span>hours</span></div><div><b id="cdM">··</b><span>minutes</span></div></div>
+        <span class="micro">The Rebellion · live elapsed time</span>
+        <div class="count"><div><b id="cdD">··</b><span>days</span></div><div><b id="cdH">··</b><span>hours</span></div><div><b id="cdM">··</b><span>minutes</span></div><div><b id="cdS">··</b><span>seconds</span></div></div>
         <div class="timeline" aria-hidden="true">
           <i class="rail"></i><i class="shut" style="left:22%;width:50%"></i>
           <i class="tick" style="left:8%"></i><i class="tick" style="left:22%"></i><i class="tick hot" style="left:47%"></i><i class="tick" style="left:72%"></i>
@@ -127,11 +141,11 @@
         </div>
       </div>
       <div class="card rules" data-reveal style="--d:90ms">
-        <div><span>Buys and sells stop</span><span>1 hour before</span></div>
-        <div><span>They start again</span><span>when the figure is on chain</span></div>
-        <div><span>Longest a freeze can last</span><span>3 days past release</span></div>
-        <div><span>Figure posted early by mistake</span><span>refused, the month is not over</span></div>
-        <div><span>An old month rewritten</span><span>refused, only newer months</span></div>
+        <div><span>Promise made</span><span>July 10, 2025</span></div>
+        <div><span>Official wording</span><span>"Airdrop coming soon"</span></div>
+        <div><span>People waiting</span><span id="clockYears">still counting</span></div>
+        <div><span>Our demand</span><span>a real timeline</span></div>
+        <div><span>Our position</span><span>we do not forget</span></div>
       </div>
     </div>
   </div>
@@ -184,14 +198,14 @@
   <div class="wrap">
     <div class="foot">
       <div>
-        <a class="brand" href="/" style="padding-left:0">pricepad</a>
-        <p>Markets on things that never had one. Every price here is a real figure published by the U.S. government.</p>
+        <a class="brand" href="/" style="padding-left:0">the rebellion</a>
+        <p>A public petition for answers. We remember the promise and count every second since it was made.</p>
       </div>
-      <div><h4>Explore</h4><a href="/app">App</a><a href="#board">The board</a><a href="#pot">How it pays</a><a href="/how-it-works">Docs</a><a href="#faq">FAQ</a></div>
-      <div><h4>Data</h4><a href="https://www.bls.gov/cpi/" target="_blank" rel="noopener">BLS consumer prices ↗</a><a href="https://www.bls.gov/cpi/factsheets/average-prices.htm" target="_blank" rel="noopener">BLS average prices ↗</a><a href="https://www.bls.gov/schedule/news_release/cpi.htm" target="_blank" rel="noopener">Release calendar ↗</a></div>
+      <div><h4>Explore</h4><a href="/app">App</a><a href="#petition">The petition</a><a href="#clock">The clock</a><a href="/how-it-works">Docs</a><a href="#faq">FAQ</a></div>
+      <div><h4>The record</h4><a href="https://x.com/Pumpfun/status/1942947267436056740" target="_blank" rel="noopener">The original post ↗</a><a href="https://pump.fun" target="_blank" rel="noopener">Pump.fun ↗</a><span>CA: GsvnTthMCo23CQLZF5qXHSuLv5d6GoAZ8WarN5zFpump</span></div>
       <div><h4>Chain</h4><a href="https://solana.com/docs" target="_blank" rel="noopener">Solana docs ↗</a></div>
     </div>
-    <div class="foot-base"><span></span><span class="micro" id="footState">Unaudited · not affiliated with the BLS</span></div>
+    <div class="foot-base"><span></span><span class="micro" id="footState">The Rebellion · public petition</span></div>
   </div>
 </footer>
 
