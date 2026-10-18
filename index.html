@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricepad · Bet on the price of eggs</title>
+<meta name="description" content="The U.S. government prices 68 everyday things every month. Pick one, pick up or down, and get paid in SOL when the number lands.">
+<meta property="og:title" content="Pricepad · Bet on the price of eggs">
+<meta property="og:description" content="Eggs, rent, funerals and 65 more, priced by the Bureau of Labor Statistics every month. Up or down, in SOL.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/","@solana/web3.js":"https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.0/+esm","buffer":"https://cdn.jsdelivr.net/npm/buffer@6.0.3/+esm"}}</script>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <nav class="pillbox">
+      <a class="brand" href="/">pricepad</a>
+      <div class="navlinks">
+        <a href="#things">Markets</a>
+        <a href="#pot">How it pays</a>
+        <a href="#freeze">Release day</a>
+        <a href="#board">The board</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </nav>
+    <div class="pillbox right">
+      <a class="btn ghost" href="/how-it-works">Docs</a>
+      <a class="btn" href="/app">Open the app</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <canvas class="scene" id="scene" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <h1 data-reveal>Bet on the price of <span class="word" id="word">eggs.</span></h1>
+    <p class="sub" data-reveal style="--d:120ms">The U.S. government prices 68 everyday things every month. Pick one, pick up or down, and get paid in SOL when the number lands.</p>
+    <div class="cta" data-reveal style="--d:220ms">
+      <a class="btn big" href="/app">Start trading</a>
+      <a class="btn big ghost" href="#pot">How it pays</a>
+    </div>
+    <div class="chips" data-reveal style="--d:320ms">
+      <span class="chip"><i class="dot on"></i>Next print <b id="chipNext">Oct 14</b></span>
+      <span class="chip"><b id="chipSeries">68</b> things on the board</span>
+      <span class="chip" id="chipProgram"><i class="dot"></i><span>Checking Solana…</span></span>
+    </div>
+  </div>
+</section>
+
+<section class="readout">
+  <div class="wrap">
+    <p id="readout">Once a month, at <k>8:30</k> in the morning, the Bureau of Labor Statistics tells America what a dozen <k>eggs</k> cost. And <k>rent,</k> and <k>funerals,</k> and a trip to <k>the vet.</k> Pricepad puts a pot of <k>SOL</k> on either side of every one of those numbers.</p>
+  </div>
+</section>
+
+<section class="sec" id="things">
+  <img class="bob l" data-obj="banana" alt="" style="right:6%;top:40px">
+  <img class="bob" data-obj="strawberry" alt="" style="left:5%;top:120px;animation-delay:-2s">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2 data-reveal>What moved last month</h2>
+      <p data-reveal style="--d:80ms">The four biggest swings on the board. Every one is a real series with a real number behind it, and any of them is open to launch.</p>
+    </div>
+    <div class="four" id="four"></div>
+  </div>
+</section>
+
+<section class="sec" id="pot">
+  <img class="bob" data-obj="tomato" alt="" style="left:8%;top:60px;animation-delay:-1s">
+  <img class="bob l" data-obj="cup" alt="" style="right:7%;bottom:60px;animation-delay:-3s">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="micro">One market · one pot of SOL</span>
+      <h2 data-reveal style="margin-top:12px">The pot never changes size.<br>The line moves.</h2>
+    </div>
+    <div class="pot" data-reveal>
+      <div class="pot-top"><span class="micro" id="potWhat">Eggs · 5x</span><span class="mono" id="potPrint">$2.27</span></div>
+      <div class="bar" id="bar">
+        <div class="side u" id="barU" style="flex-basis:50%"><span>UP<small id="barUv">1.000 SOL</small></span></div>
+        <div class="side d" id="barD" style="flex-basis:50%"><span>DOWN<small id="barDv">1.000 SOL</small></span></div>
+        <i class="knob" id="knob" style="left:50%"></i>
+      </div>
+      <div class="pot-foot"><span class="micro" id="barUp">50.0%</span><span class="micro" id="barDp">50.0%</span></div>
+      <p class="pot-cap" id="potCap">A flat month pays nobody. The line stays where it is.</p>
+      <div class="pot-ctl">
+        <span class="micro">The print</span>
+        <input id="potRange" type="range" min="-60" max="60" value="0" aria-label="How far the next print moves, in tenths of a percent">
+        <div class="chips-row" id="potLev"><button data-lev="1">1x</button><button data-lev="2">2x</button><button class="on" data-lev="5">5x</button><button data-lev="10">10x</button><button data-lev="20">20x</button></div>
+      </div>
+      <p class="law micro">up pot + down pot == the SOL in the market's vault</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="trio">
+      <div data-reveal><h3>Pick</h3><p>Any of the 68 series, at any leverage from 1x to 50x. Eggs swing hard, so 2x is plenty. Toilet paper barely moves, so 20x makes a month of it worth having an opinion about.</p></div>
+      <div data-reveal style="--d:90ms"><h3>Back a side</h3><p>Your SOL goes into the up pot or the down pot, and you get that side's token at what the pot is worth right now. No order book, no counterparty to find, no fee.</p></div>
+      <div data-reveal style="--d:180ms"><h3>Get paid</h3><p>When the next figure lands, the losing pot pays the winning one: the move times the leverage, never more than 99%. Sell whenever you like, outside release hour.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="freeze">
+  <img class="bob" data-obj="envelope" alt="" style="right:9%;top:50px;animation-delay:-1.5s">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2 data-reveal>Nobody trades on a leaked number</h2>
+      <p data-reveal style="--d:80ms">At 8:30 the figure is on bls.gov. Until it is on chain, anyone who has read it could dump the losing side on everyone still holding. So every market shuts for release hour.</p>
+    </div>
+    <div class="clock">
+      <div class="card" data-reveal>
+        <span class="micro">Consumer Price Index · 8:30 ET</span>
+        <div class="count"><div><b id="cdD">··</b><span>days</span></div><div><b id="cdH">··</b><span>hours</span></div><div><b id="cdM">··</b><span>minutes</span></div></div>
+        <div class="timeline" aria-hidden="true">
+          <i class="rail"></i><i class="shut" style="left:22%;width:50%"></i>
+          <i class="tick" style="left:8%"></i><i class="tick" style="left:22%"></i><i class="tick hot" style="left:47%"></i><i class="tick" style="left:72%"></i>
+          <span class="lab" style="left:6%">open</span><span class="lab" style="left:22%">7:30 shut</span><span class="lab" style="left:47%">8:30 print</span><span class="lab" style="left:78%">posted, open</span>
+        </div>
+      </div>
+      <div class="card rules" data-reveal style="--d:90ms">
+        <div><span>Buys and sells stop</span><span>1 hour before</span></div>
+        <div><span>They start again</span><span>when the figure is on chain</span></div>
+        <div><span>Longest a freeze can last</span><span>3 days past release</span></div>
+        <div><span>Figure posted early by mistake</span><span>refused, the month is not over</span></div>
+        <div><span>An old month rewritten</span><span>refused, only newer months</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="all">
+  <div class="wrap">
+    <div class="row-h"><h2 data-reveal>All 68 of them</h2><a class="link" href="/app">Open the app →</a></div>
+    <div class="rail-scroll" id="rail"></div>
+    <div class="progress"><i id="railBar"></i></div>
+  </div>
+</section>
+
+<section class="sec" id="board">
+  <div class="wrap">
+    <div class="row-h">
+      <div class="sec-h left" style="margin-bottom:0">
+        <h2 data-reveal>The board</h2>
+        <p data-reveal>Groceries and fuel are BLS average prices in dollars. Everything else is a CPI item index, where only the change matters. Every row links to its source.</p>
+      </div>
+      <div class="seg" id="boardSort"><button class="on" data-s="move">By move</button><button data-s="az">A–Z</button></div>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Thing</th><th class="r">Last print</th><th class="r">Month</th><th class="r">Year</th><th class="hide-sm">Two years</th><th class="r hide-md">Source</th></tr></thead>
+        <tbody id="boardBody"></tbody>
+      </table>
+    </div>
+    <div class="more"><button class="btn light" id="boardMore">Show all 68</button></div>
+  </div>
+</section>
+
+<section class="sec" id="faq">
+  <img class="bob l" data-obj="hotdog" alt="" style="left:6%;top:40px">
+  <div class="wrap">
+    <div class="sec-h"><h2 data-reveal>Questions</h2></div>
+    <div class="faq">
+      <details class="q" open><summary>What am I actually buying?</summary><div class="a"><p>A token that is a share of one side's pot. EGG5UP is a share of the up pot on the 5x eggs market, and selling it back pays you that share in SOL. You are not buying eggs. You are on one side of a published number, against whoever is on the other.</p></div></details>
+      <details class="q"><summary>Where do the numbers come from?</summary><div class="a"><p>The U.S. Bureau of Labor Statistics. Groceries and fuel are its average price series (dollars per pound, gallon or dozen). Everything else is a CPI item index. Every market links to its series on bls.gov, so any figure can be checked in one click.</p></div></details>
+      <details class="q"><summary>How much does a print move?</summary><div class="a"><p>The size of the move times the market's leverage, as a share of the losing pot, capped at 99%. Eggs up 2% on a 5x market moves 10% of the down pot across the line. A flat month moves nothing, and if nobody is on one side, nothing moves at all.</p></div></details>
+      <details class="q"><summary>Why can't I sell during release hour?</summary><div class="a"><p>Because the only people who want to sell in that hour already know the answer. The freeze starts an hour before the scheduled release, ends as soon as the figure is on chain, and can never run past three days after the release even if the figure never arrives.</p></div></details>
+      <details class="q"><summary>Who puts the number on chain?</summary><div class="a"><p>One attester key. The program lets it add a newer month and announce the next release, and nothing else: it cannot rewrite a month, cannot post a month that has not ended, and has no instruction that touches a market's SOL. It could post a wrong figure, so check any print against its source.</p></div></details>
+      <details class="q"><summary>What are the fees?</summary><div class="a"><p>None. Launching a market costs its account rent, and trades cost Solana network fees. The program takes nothing from a pot.</p></div></details>
+      <details class="q"><summary>Is this real money?</summary><div class="a"><p id="faqLive">Not yet. Balances are play SOL until the Solana program is deployed to mainnet.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="/" style="padding-left:0">pricepad</a>
+        <p>Markets on things that never had one. Every price here is a real figure published by the U.S. government.</p>
+      </div>
+      <div><h4>Explore</h4><a href="/app">App</a><a href="#board">The board</a><a href="#pot">How it pays</a><a href="/how-it-works">Docs</a><a href="#faq">FAQ</a></div>
+      <div><h4>Data</h4><a href="https://www.bls.gov/cpi/" target="_blank" rel="noopener">BLS consumer prices ↗</a><a href="https://www.bls.gov/cpi/factsheets/average-prices.htm" target="_blank" rel="noopener">BLS average prices ↗</a><a href="https://www.bls.gov/schedule/news_release/cpi.htm" target="_blank" rel="noopener">Release calendar ↗</a></div>
+      <div><h4>Chain</h4><a href="https://solana.com/docs" target="_blank" rel="noopener">Solana docs ↗</a></div>
+    </div>
+    <div class="foot-base"><span></span><span class="micro" id="footState">Unaudited · not affiliated with the BLS</span></div>
+  </div>
+</footer>
+
+<script type="module" src="/main.js"></script>
+</body>
+</html>

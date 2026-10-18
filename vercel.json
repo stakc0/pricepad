@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    { "source": "/app", "destination": "/app.html" },
+    { "source": "/how-it-works", "destination": "/how-it-works.html" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [{ "key": "cache-control", "value": "no-store" }]
+    }
+  ]
+}

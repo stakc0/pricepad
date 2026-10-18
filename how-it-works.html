@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricepad · How it works</title>
+<meta name="description" content="How an Pricepad market holds SOL, how a BLS print settles it, and what the attester can and cannot do.">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/","@solana/web3.js":"https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.0/+esm","buffer":"https://cdn.jsdelivr.net/npm/buffer@6.0.3/+esm"}}</script>
+</head>
+<body class="apppage">
+
+<header class="nav">
+  <div class="wrap">
+    <nav class="pillbox">
+      <a class="brand" href="/">pricepad</a>
+      <div class="navlinks"><a href="/#board">The board</a><a href="/#pot">How it pays</a><a class="on" href="/how-it-works">Docs</a></div>
+    </nav>
+    <div class="pillbox right"><a class="btn" href="/app">Open the app</a></div>
+  </div>
+</header>
+
+<main class="docs">
+  <aside class="toc"><span class="micro">Contents</span><nav id="toc" style="margin-top:10px"></nav></aside>
+  <article class="doc">
+    <span class="micro">Documentation</span>
+    <h1>How Pricepad works</h1>
+    <p class="lead">A market is one Bureau of Labor Statistics series at one leverage, holding one pot of SOL split into an up side and a down side. This page covers where the numbers come from, how a print moves the pots, and what the program can and cannot do.</p>
+
+    <section id="markets">
+      <h2>Markets</h2>
+      <p>The program keeps one market account per series per leverage. Leverage is a whole number from 1 to 50, chosen by whoever launches the market, and it never changes. Eggs at 2x and eggs at 20x are separate markets with separate pots.</p>
+      <p>Each market has two SPL mints, one per side, whose only mint authority is the market itself. The app names them after the series and leverage: EGG5UP and EGG5DN for eggs at 5x. The market's SOL sits in a system-owned vault account that only the program can sign for.</p>
+      <p>Launching is permissionless. The launcher pays the rent for the market, the two mints and the vault's rent-exempt floor, which is never part of either pot. A launch and a first buy fit in one transaction.</p>
+    </section>
+
+    <section id="buying">
+      <h2>Buying and selling</h2>
+      <p>Buying a side adds your SOL to that side's pot and mints you tokens at the pot's value per token: <code>shares = lamports × supply / pot</code>, or one token per lamport when the side is empty. Selling burns tokens for <code>pot × shares / supply</code>. Whoever sells the last token of a side takes the whole pot, rounding dust included.</p>
+      <p>Both directions trade at the pot's own value per token, so a buy or a sell never changes the value of anyone else's tokens. That is why you buy one side directly rather than minting both and selling the half you disagree with.</p>
+      <div class="callout"><b>No fees</b><p>The program takes nothing on a buy, a sell, a launch or a settlement. You pay Solana network fees and, when you launch or first buy a side, account rent.</p></div>
+    </section>
+
+    <section id="settlement">
+      <h2>Settlement</h2>
+      <p>A market remembers which print of its series it has settled to. <code>settle</code> walks forward through newer prints one at a time, up to 24 per call. Anyone can call it, and every buy and sell calls it first. For each step from <code>v0</code> to <code>v1</code>:</p>
+      <ul>
+        <li>Up wins if the value rose, down wins if it fell, and a flat month moves nothing.</li>
+        <li>The share of the losing pot that moves is <code>|v1 − v0| / v0 × leverage</code>, capped at 99%.</li>
+        <li>That share is added to the winning pot. The total never changes.</li>
+        <li>If either side has no holders, nothing moves.</li>
+      </ul>
+      <table><thead><tr><th>Eggs</th><th>Move</th><th>At 2x</th><th>At 10x</th></tr></thead><tbody>
+        <tr><td>$2.000 to $2.020</td><td class="mono">+1%</td><td class="mono">2% of down to up</td><td class="mono">10% of down to up</td></tr>
+        <tr><td>$2.000 to $1.900</td><td class="mono">−5%</td><td class="mono">10% of up to down</td><td class="mono">50% of up to down</td></tr>
+        <tr><td>$2.000 to $2.400</td><td class="mono">+20%</td><td class="mono">40% of down to up</td><td class="mono">99%, the cap</td></tr>
+      </tbody></table>
+      <p>BLS occasionally skips a month; it published no October 2025 figures during the shutdown. The series then simply has no print for that month, and the next one is compared with the last.</p>
+    </section>
+
+    <section id="freeze">
+      <h2>The release freeze</h2>
+      <p>The config account holds <code>next_release</code>, the scheduled time of the next BLS release. From one hour before it, buys and sells fail with <code>Frozen</code> until the market's series has a print posted after the freeze began. A market reopens as soon as its own figure lands.</p>
+      <p>The freeze cannot outlast three days after the scheduled release, figure or not, and the attester can only announce a release within the next 62 days.</p>
+      <div class="callout"><b>What it protects</b><p>Without it, anyone who reads the figure on bls.gov at 8:30 could sell the losing side before it is on chain, and the holders left behind would pay the whole move between them.</p></div>
+    </section>
+
+    <section id="oracle">
+      <h2>The attester</h2>
+      <p>Each series is a PDA seeded with its BLS id, the same string bls.gov uses, holding its last 24 prints as <code>(period, value × 1000, posted_at)</code>. One key, the attester, can list a series, post a newer month, and announce the next release.</p>
+      <p>The program refuses a month that is not later than the last one, a month that has not ended by UTC, and a zero value. There is no instruction through which the attester reaches a market or its SOL. Handing the role on takes two transactions, one from each key.</p>
+      <div class="callout"><b>The trust you extend</b><p>The attester could post a wrong figure, and markets settle on what is posted. It cannot rewrite a month once posted. Every series in the app links to its source, so any print can be checked.</p></div>
+    </section>
+
+    <section id="status">
+      <h2>Status</h2>
+      <p id="statusText">Reading Solana…</p>
+      <table><tbody id="params"></tbody></table>
+      <p>The program is <strong>unaudited</strong>. Its test suite runs the compiled program under solana-program-test with a controllable clock: the full cycle, the freeze, the freeze's own expiry, every guard, and a randomized run that checks after each step that the vault holds exactly the two pots plus its rent floor.</p>
+    </section>
+  </article>
+</main>
+
+<footer><div class="wrap"><div class="foot-base" style="margin-top:0"><span class="micro">Not affiliated with the BLS · not investment advice</span></div></div></footer>
+
+<script type="module">
+  import { readAll, loadSeries, short } from "/sol.js";
+  const $ = (s) => document.querySelector(s);
+  $("#toc").innerHTML = [...document.querySelectorAll(".doc section")].map((s) => `<a href="#${s.id}">${s.querySelector("h2").textContent}</a>`).join("");
+  try {
+    const series = await loadSeries();
+    const c = await readAll(series.map((s) => s.id));
+    if (!c.deployed) {
+      $("#statusText").textContent = "The program is built and tested but not yet deployed to Solana mainnet. Its address is reserved: H8G4RMtFhK5cFzHECnM8iRCeYAk3SjyyuChbUjjJgc25.";
+    } else {
+      $("#statusText").textContent = "Read from the live program as this page loaded.";
+      const rows = [["Attester", short(c.config.attester.toBase58())], ["Next release", new Date(c.config.nextRelease * 1000).toUTCString().replace(" GMT", " UTC")], ["Series listed", c.series.size], ["Markets launched", c.markets.length], ["Most a print can move", "99% of the losing pot"], ["Leverage", "1x to 50x"], ["Smallest buy", "0.0001 SOL"]];
+      $("#params").innerHTML = rows.map(([k, v]) => `<tr><td>${k}</td><td class="r mono">${v}</td></tr>`).join("");
+    }
+  } catch (e) { $("#statusText").textContent = "Could not reach Solana: " + e.message; }
+  addEventListener("click", async (e) => { const b = e.target.closest("[data-addr]"); if (!b) return; try { await navigator.clipboard.writeText(b.dataset.addr); b.querySelector(".do").textContent = "copied"; } catch {} });
+</script>
+</body>
+</html>
